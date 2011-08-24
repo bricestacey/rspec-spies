@@ -2,6 +2,23 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 module Spec
   module Matchers
+    describe "Class.any_instance.should have_received(:all, *args)" do
+      before do
+        @object = String.new("HI!")
+      end
+
+      it "does match if method is called with correct args" do
+        @object.slice(5)
+
+        String.any_instance.should_receive(:slice).with(5).should be_true
+      end
+
+      it "does not match if method is called with incorrect args" do
+        @object.slice(3)
+
+        String.any_instance.should_receive(:slice).with(5).should be_false
+      end
+    end
     describe "[object.should] have_received(method, *args)" do
       before do
         @object = String.new("HI!")
